@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimCI</name>
+  <author>krafs</author>
+  <supportedVersions>
+    <li>1.0</li>
+  </supportedVersions>
+  <description>RimCI is a mod that demonstrates how GitHub Actions can be used to do continuous integration with a mod.</description>
+</ModMetaData>
