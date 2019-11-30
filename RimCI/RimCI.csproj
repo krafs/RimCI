@@ -3,6 +3,10 @@
 
   <PropertyGroup>
     <TargetFramework>net35</TargetFramework>
+    <OutputPath>..\Assemblies</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

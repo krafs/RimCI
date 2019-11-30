@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Verse;
 
 namespace RimCI
 {
@@ -10,6 +7,7 @@ namespace RimCI
     {
         static Main()
         {
-            Log.Message("Test mod that was built using GitHub Actions.");
+            Log.Message("RimCI is a mod using GitHub Actions.");
         }
     }
+}
