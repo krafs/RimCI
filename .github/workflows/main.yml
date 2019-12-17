@@ -22,7 +22,8 @@ jobs:
     - name: Build Project
       run: |
         cd RimCI
-        msbuild RimCI.csproj -restore
+        dotnet build
+   #     msbuild RimCI.csproj -restore
         
   build-on-ubuntu:
     name: Build on Ubuntu
