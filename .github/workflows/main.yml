@@ -1,4 +1,4 @@
-name: Build Non-Release
+name: Build
 
 on:
   push:
