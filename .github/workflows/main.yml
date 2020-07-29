@@ -2,16 +2,18 @@ name: Build
 
 on:
   push:
+    branches:
+      - '**'
     paths-ignore:
-    - README.md
+      - 'README.md'
     tags-ignore:
-    # This will ignore release versions tagged with a version identifier. We'll use a
-    # a separate workflow for them.
-    - v*
-  # If you don't want to build on a pull_request, then remove this, but it is kind of helpful.
+      # This will ignore release versions tagged with a version identifier. We'll use a
+      # a separate workflow for them.
+      - 'v*'
+    # If you don't want to build on a pull_request, then remove this, but it is kind of helpful.
   pull_request:
     paths-ignore: 
-    - README.md
+      - README.md
 
 jobs:
   build:
