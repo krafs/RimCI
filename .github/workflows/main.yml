@@ -1,9 +1,14 @@
-name: Build
+name: Build Non-Release
 
 on:
   push:
     paths-ignore:
     - README.md
+    tags-ignore:
+    # This will ignore release versions tagged with a version identifier. We'll use a
+    # a separate workflow for them.
+    - v*
+  # If you don't want to build on a pull_request, then remove this, but it is kind of helpful.
   pull_request:
     paths-ignore: 
     - README.md
@@ -14,6 +19,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
+        # You can configure operating systems to build on here. It shouldn't make a difference 
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
     - name: Setup Dotnet
@@ -24,7 +30,32 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v1
 
-    - name: Build Project
-      run: |
-        cd RimCI
-        dotnet build
+    - name: Build Mod
+      run: dotnet build
+
+    # I don't know how well testing will work without Rimworld actually installed. 
+    # But if you have unit tests configured to work with dotnet, you may be able 
+    # to uncomment this and add a testing step.
+    # - name: Test Mod
+    #   run: dotnet test
+
+    # - name: Zip-up Mod
+    #   run: tar --exclude="*." -zcvf dist.tar.gz About/ Assemblies/ Defs/ Languages/ Patches/ RimCI/ Sounds/ Textures/
+
+    # To modify this with your own directory structure, just change the paths to whatever you want.
+    - name: Upload Mod Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: mod
+        path: |
+          About/
+          Assemblies/
+          Defs/
+          Languages/
+          Patches/
+          Sounds/
+          Source/
+          Textures/
+          !**/.*
+        # This final path is to exclude hidden files such as .gitkeep and .DS_STORE. I would recommend
+        # keeping it, but I don't think it will break anything if you remove or modify it.
