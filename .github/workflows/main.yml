@@ -1,54 +1,30 @@
 name: Build
 
-on: [push]
+on:
+  push:
+    paths-ignore:
+    - README.md
+  pull_request:
+    paths-ignore: 
+    - README.md
 
 jobs:
-  build-on-windows:
-    name: Build on Windows
-    runs-on: windows-2019
+  build:
+    name: Build on ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
-       
     - name: Setup Dotnet
       uses: actions/setup-dotnet@v1.5.0
       with:
-        version: 3.1.x
+        dotnet-version: 3.1.x
 
     - name: Checkout Repository
       uses: actions/checkout@v1
-
-    - name: Setup MSBuild.exe
-      uses: microsoft/Setup-MSBuild@v1
 
     - name: Build Project
       run: |
         cd RimCI
         dotnet build
-   #     msbuild RimCI.csproj -restore
-        
-  build-on-ubuntu:
-    name: Build on Ubuntu
-    runs-on: ubuntu-18.04
-    steps:
-
-    - name: Checkout Repository
-      uses: actions/checkout@v1
-
-    - name: Build Project
-      run: |
-        cd RimCI
-        msbuild -t:restore
-        msbuild
-
-  build-on-mac:
-    name: Build on MacOS
-    runs-on: macOS-10.14
-    steps:
-
-    - name: Checkout Repository
-      uses: actions/checkout@v1
-
-    - name: Build Project
-      run: |
-        cd RimCI
-        msbuild -t:restore
-        msbuild
