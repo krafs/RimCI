@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.161
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimCI", "RimCI\RimCI.csproj", "{386C34EE-D407-4A75-94A7-132A3245B59B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimCI", "RimCI.csproj", "{386C34EE-D407-4A75-94A7-132A3245B59B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
