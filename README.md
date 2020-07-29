@@ -1,6 +1,6 @@
 # RimCI
 
-This repository demonstrates a barebone, but fully functional, RimWorld mod being built using **GitHub Actions** in **Windows**, **Ubuntu** and **MacOS**.
+This repository demonstrates a barebone, but fully functional, RimWorld mod being built using **GitHub Actions** on **Windows**, **Ubuntu** and **MacOS**.
 
 It currently has one workflow called **Build** that builds the mod in all three environments upon **Git Push**.
 

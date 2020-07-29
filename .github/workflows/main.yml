@@ -1,12 +1,12 @@
 name: Build
 
 on:
-  pull_request:
-    paths-ignore:
-      - '*.md'
   push:
     paths-ignore:
-      - '*.md'
+    - README.md
+  pull_request:
+    paths-ignore: 
+    - README.md
 
 jobs:
   build:
@@ -16,16 +16,15 @@ jobs:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@main
-
     - name: Setup Dotnet
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v1.5.0
       with:
-        dotnet-version: 3.0.x
+        dotnet-version: 3.1.x
+
+    - name: Checkout Repository
+      uses: actions/checkout@v1
 
     - name: Build Project
-      run: dotnet build
-
-    - name: Zip-up Mod Snapshot
-      run: zip -r dist.zip About/ Defs/ Languages/ Patches/ RimCI/ Sounds/ Textures/ -x "*/\.*"
+      run: |
+        cd RimCI
+        dotnet build
