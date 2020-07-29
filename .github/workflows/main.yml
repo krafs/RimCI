@@ -10,10 +10,12 @@ on:
 
 jobs:
   build:
-    name: Build on Windows
-    runs-on: windows-2019
+    name: Build on ${{ matrix.operating-system }}
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
-       
     - name: Checkout Repository
       uses: actions/checkout@main
 
@@ -21,50 +23,9 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.0.x
-        source-url: https://nuget.pkg.github.com/${{env.GITHUB_ACTOR}}/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Build Project
       run: dotnet build
 
-    - name: Create the package
-      run: dotnet pack 
-        
-  build-on-ubuntu:
-    name: Build on Ubuntu
-    runs-on: ubuntu-18.04
-    steps:
-
-    - name: Checkout Repository
-      uses: actions/checkout@main
-
-    - name: Setup Dotnet
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.0.x
-        source-url: https://nuget.pkg.github.com/${{env.GITHUB_ACTOR}}/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    - name: Build Project
-      run: dotnet build
-
-  build-on-mac:
-    name: Build on MacOS
-    runs-on: macOS-10.14
-    steps:
-
-    - name: Checkout Repository
-      uses: actions/checkout@main
-
-    - name: Setup Dotnet
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.0.x
-        source-url: https://nuget.pkg.github.com/${{env.GITHUB_ACTOR}}/index.json
-      env:
-        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-    
-    - name: Build Project
-      run: dotnet build
+    - name: Zip-up Mod Snapshot
+      run: zip -r dist.zip About/ Defs/ Languages/ Patches/ RimCI/ Sounds/ Textures/ -x "*/\.*"
