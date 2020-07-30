@@ -7,12 +7,13 @@ env:
   # Change this to what you want your folder name to be in people's Mods/
   # folder. It should be unique to your mod.
   MOD_NAME: RimCI
+  # These two environment variables control whether all releases created by the
+  # release job are drafts or prereleases.
+  RELEASE_DRAFT: true
+  RELEASE_PRERELEASE: false
 
 on:
   push:
-    branches:
-      # TODO: Remove this in final version, for testing only.
-      - 'dev/add-release-step'
     tags:
       # This will only run the release workflow when it's tagged with a version
       # tag.
@@ -117,27 +118,46 @@ jobs:
         name: ${{ env.MOD_NAME }}
         path: ${{ env.MOD_PATH }}.zip
 
-  # release:
-  #   name: Release
-  #   needs: package
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Get the Version
-  #     id: get_version
-  #     run: echo ::set-output name=VERSION::$(echo ${{ env.GITHUB_REF }} | cut -d / -f 3)
-  #   - name: Set Environment Variables
-  #     # This is a special syntax for GitHub Actions that sets an environment
-  #     # variable. See: https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
-  #     run: echo "::set-env name=MOD_RELEASE::$MOD_NAME-${{ steps.get_version.outputs.VERSION }}"
+  release:
+    name: Release
+    needs: package
+    runs-on: ubuntu-latest
+    steps:
+    - name: Get the Version
+      id: get_version
+      # This is a special syntax for GitHub Actions that sets an output
+      # variable. See: https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+      run: echo ::set-output name=VERSION::$(echo ${{ env.GITHUB_REF }} | cut -d / -f 3)
+    - name: Set Environment Variables
+      # This is a special syntax for GitHub Actions that sets an environment
+      # variable. See: https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
+      run: echo "::set-env name=MOD_RELEASE::$MOD_NAME-${{ steps.get_version.outputs.VERSION }}"
 
-  #   - name: Download Mod Artifacts from Build Step
-  #     uses: actions/download-artifact@v2
-  #     with:
-  #       name: ${{ env.MOD_NAME }}
-  #       path: ${{ env.MOD_RELEASE }}.zip
+    - name: Download Mod Artifacts from Build Step
+      uses: actions/download-artifact@v2
+      with:
+        name: ${{ env.MOD_NAME }}
+        path: ./${{ env.MOD_RELEASE }}.zip
 
-  #   - name: Create Release
-  #     id: create_release
-  #     uses: actions/create-release@v1
-  #     env:
-  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ env.MOD_RELEASE }}
+        # These can be configured at the top of the workflow.
+        draft: ${{ env.RELEASE_DRAFT }}
+        prerelease: ${{ env.RELEASE_PRERELEASE }}
+    
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: ./${{ env.MOD_RELEASE }}.zip
+        asset_name: ${{ env.MOD_RELEASE }}.zip
+        asset_content_type: application/zip
