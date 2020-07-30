@@ -5,12 +5,8 @@ env:
   # can be found.
   SLN_PATH: Source/
   # Change this to what you want your folder name to be in people's Mods/
-  # folder. It should be unique to your mod. By default, it'll take the
-  # name of the repository.
-  MOD_NAME: ${GITHUB_REPOSITORY#*/}
-  # If for some reason you want a specific version name, rather than taking it
-  # from the tag, you can modify it here.
-  MOD_VERSION: ${GITHUB_REF#refs/*/}
+  # folder. It should be unique to your mod.
+  MOD_NAME: RimCI
 
 on:
   push:
