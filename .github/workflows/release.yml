@@ -108,8 +108,8 @@ jobs:
 
     - name: Zip Mod
       run: | 
-        cd ${{ env.MOD_PATH }}
-        zip -r ${{ env.MOD_NAME }}.zip ./*
+        cd $HOME
+        zip -r ${{ env.MOD_NAME }}.zip ./${{ env.MOD_NAME }}/*
 
     - name: Upload Mod Zip Artifact
       uses: actions/upload-artifact@v2
@@ -122,10 +122,13 @@ jobs:
   #   needs: package
   #   runs-on: ubuntu-latest
   #   steps:
+  #   - name: Get the Version
+  #     id: get_version
+  #     run: echo ::set-output name=VERSION::$(echo ${{ env.GITHUB_REF }} | cut -d / -f 3)
   #   - name: Set Environment Variables
   #     # This is a special syntax for GitHub Actions that sets an environment
   #     # variable. See: https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-environment-variable
-  #     run: echo "::set-env name=MOD_RELEASE::$MOD_NAME-$MOD_VERSION"
+  #     run: echo "::set-env name=MOD_RELEASE::$MOD_NAME-${{ steps.get_version.outputs.VERSION }}"
 
   #   - name: Download Mod Artifacts from Build Step
   #     uses: actions/download-artifact@v2
