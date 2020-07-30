@@ -39,16 +39,16 @@ jobs:
         dotnet-version: 3.1.x
       
     - name: Install Mod Dependencies
-      run: dotnet restore $SLN_PATH
+      run: dotnet restore ${{ env.SLN_PATH }}
 
     - name: Build Mod
-      run: dotnet build $SLN_PATH --configuration Release --no-restore
+      run: dotnet build ${{ env.SLN_PATH }} --configuration Release --no-restore
 
     # I don't know how well testing will work without Rimworld actually installed. 
     # But if you have unit tests configured to work with dotnet, you may be able 
     # to uncomment this and add a testing step.
     # - name: Test Mod
-    #   run: dotnet test $SLN_PATH --no-restore --verbosity normal
+    #   run: dotnet test ${{ env.SLN_PATH }} --no-restore --verbosity normal
 
     # There is no `zip` command on windows so you need to use tar.
     # - name: Zip-up Mod

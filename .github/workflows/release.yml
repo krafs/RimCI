@@ -38,16 +38,16 @@ jobs:
         dotnet-version: 3.1.x
       
     - name: Install Mod Dependencies
-      run: dotnet restore $SLN_PATH
+      run: dotnet restore ${{ env.SLN_PATH }}
 
     - name: Build Mod
-      run: dotnet build $SLN_PATH --configuration Release --no-restore
+      run: dotnet build ${{ env.SLN_PATH }} --configuration Release --no-restore
 
     # I don't know how well testing will work without Rimworld actually installed. 
     # But if you have unit tests configured to work with dotnet, you may be able 
     # to uncomment this and add a testing step.
     # - name: Test Mod
-    #   run: dotnet test $SLN_PATH --no-restore --verbosity normal
+    #   run: dotnet test ${{ env.SLN_PATH }} --no-restore --verbosity normal
 
     # There is no `zip` command on windows so you need to use tar.
     # - name: Zip-up Mod
@@ -85,32 +85,32 @@ jobs:
       run: echo "::set-env name=MOD_PATH::$HOME/$MOD_NAME"
     
     - name: Create Mod Folder
-      run: mkdir -p $MOD_PATH
+      run: mkdir -p ${{ env.MOD_PATH }}
 
     - name: Download Mod Artifacts from Build Step
       uses: actions/download-artifact@v2
       with:
         name: build
-        path: $MOD_PATH
+        path: ${{ env.MOD_PATH }}
 
     # If you have any other Rimworld folders that didn't get scooped up in the
     # artifacts, add them here. It may be neccessary to change this for v1.1 mods.
     - name: Create Mod Folders
       run: |
-        mkdir -p $MOD_PATH/About
-        mkdir -p $MOD_PATH/Assemblies
-        mkdir -p $MOD_PATH/Defs
-        mkdir -p $MOD_PATH/Languages
-        mkdir -p $MOD_PATH/Patches
-        mkdir -p $MOD_PATH/Sounds
-        mkdir -p $MOD_PATH/Source
-        mkdir -p $MOD_PATH/Textures
+        mkdir -p ${{ env.MOD_PATH }}/About
+        mkdir -p ${{ env.MOD_PATH }}/Assemblies
+        mkdir -p ${{ env.MOD_PATH }}/Defs
+        mkdir -p ${{ env.MOD_PATH }}/Languages
+        mkdir -p ${{ env.MOD_PATH }}/Patches
+        mkdir -p ${{ env.MOD_PATH }}/Sounds
+        mkdir -p ${{ env.MOD_PATH }}/Source
+        mkdir -p ${{ env.MOD_PATH }}/Textures
 
     - name: Zip Mod
-      run: zip -r $MOD_NAME.zip $MOD_PATH
+      run: zip -r ${{ env.MOD_NAME }}.zip ${{ env.MOD_PATH }}
 
     - name: Upload Mod Zip Artifact
       uses: actions/upload-artifact@v2
       with:
         name: $MOD_NAME
-        path: $MOD_NAME.zip
+        path: ${{ env.MOD_NAME }}.zip
