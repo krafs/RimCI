@@ -110,14 +110,12 @@ jobs:
       run: | 
         cd $HOME
         zip -r ./${{ env.MOD_NAME }}.zip ./${{ env.MOD_NAME }}/*
-        pwd
-        ls
 
     - name: Upload Mod Zip Artifact
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.MOD_NAME }}
-        path: ${{ env.HOME }}/${{ env.MOD_NAME }}.zip
+        path: ${{ env.MOD_PATH }}.zip
 
   # release:
   #   name: Release
