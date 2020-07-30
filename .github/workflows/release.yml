@@ -107,10 +107,10 @@ jobs:
         mkdir -p ${{ env.MOD_PATH }}/Textures
 
     - name: Zip Mod
-      run: zip -r ${{ env.MOD_NAME }}.zip ${{ env.MOD_PATH }}
+      run: zip -r ${{ env.MOD_NAME }}.zip ${{ env.MOD_NAME }}
 
     - name: Upload Mod Zip Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: $MOD_NAME
+        name: ${{ env.MOD_NAME }}
         path: ${{ env.MOD_NAME }}.zip
