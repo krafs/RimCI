@@ -3,7 +3,7 @@ name: Release
 env:
   # Change this to point to your solution, or the folder in which your solution 
   # can be found.
-  SLN_FOLDER: Source/
+  SLN_PATH: Source
   # Change this to what you want your folder name to be in people's Mods/
   # folder. It should be unique to your mod.
   MOD_NAME: RimCI
@@ -38,16 +38,16 @@ jobs:
         dotnet-version: 3.1.x
       
     - name: Install Mod Dependencies
-      run: dotnet restore $SLN_FOLDER
+      run: dotnet restore $SLN_PATH
 
     - name: Build Mod
-      run: dotnet build $SLN_FOLDER --configuration Release --no-restore
+      run: dotnet build $SLN_PATH --configuration Release --no-restore
 
     # I don't know how well testing will work without Rimworld actually installed. 
     # But if you have unit tests configured to work with dotnet, you may be able 
     # to uncomment this and add a testing step.
     # - name: Test Mod
-    #   run: dotnet test $SLN_FOLDER --no-restore --verbosity normal
+    #   run: dotnet test $SLN_PATH --no-restore --verbosity normal
 
     # There is no `zip` command on windows so you need to use tar.
     # - name: Zip-up Mod
@@ -76,6 +76,7 @@ jobs:
         # you remove or modify it.
   package:
     name: Package
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - name: Set Environment Variables
