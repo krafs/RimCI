@@ -2,16 +2,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net35</TargetFramework>
-    <OutputPath>..\Assemblies</OutputPath>
+    <TargetFrameworks>NET35;NET472</TargetFrameworks>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'RELEASE'">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.0.2408" />
-    <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.0" />
+  <PropertyGroup Condition="'$(TargetFramework)' == 'NET35'">
+    <OutputPath>..\Assemblies</OutputPath>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(TargetFramework)' == 'NET472'">
+    <OutputPath>..\1.1\Assemblies</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.0.2551" />
+    <PackageReference Include="jnm2.ReferenceAssemblies.net35" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net472'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2654" />
   </ItemGroup>
 
 </Project>
