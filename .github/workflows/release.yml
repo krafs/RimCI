@@ -115,7 +115,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: ${{ env.MOD_NAME }}
-        path: ${{ env.MOD_NAME }}.zip
+        path: ${{ env.HOME }}/${{ env.MOD_NAME }}.zip
 
   # release:
   #   name: Release
@@ -134,6 +134,10 @@ jobs:
   #     uses: actions/download-artifact@v2
   #     with:
   #       name: ${{ env.MOD_NAME }}
-  #       path: ${{ env.MOD_RELEASE }}
+  #       path: ${{ env.MOD_RELEASE }}.zip
 
-  #   - 
+  #   - name: Create Release
+  #     id: create_release
+  #     uses: actions/create-release@v1
+  #     env:
+  #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
