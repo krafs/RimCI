@@ -3,7 +3,7 @@ name: Build
 env:
   # Change this to point to your solution, or the folder in which your solution 
   # can be found.
-  SLN_PATH: Source
+  SLN_PATH: Source/
 
 on:
   push:
