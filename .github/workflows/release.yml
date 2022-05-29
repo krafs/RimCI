@@ -31,12 +31,12 @@ jobs:
         operating-system: [ubuntu-latest]
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       
     - name: Setup Dotnet
-      uses: actions/setup-dotnet@2
+      uses: actions/setup-dotnet@3
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
       
     - name: Install Mod Dependencies
       run: dotnet restore ${{ env.SLN_PATH }}
@@ -58,9 +58,10 @@ jobs:
     # whatever you want. It will not upload any empty directories, those with only
     # hidden files will also be excluded.
     - name: Upload Mod Artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: build
+        retention-days: 7
         path: |
           About/
           Assemblies/
@@ -89,7 +90,7 @@ jobs:
       run: mkdir -p ${{ env.MOD_PATH }}
 
     - name: Download Mod Artifacts from Build Step
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: build
         path: ${{ env.MOD_PATH }}
@@ -113,10 +114,11 @@ jobs:
         zip -r ./${{ env.MOD_NAME }}.zip ./${{ env.MOD_NAME }}/*
 
     - name: Upload Mod Zip Artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ env.MOD_NAME }}
         path: ${{ env.MOD_PATH }}.zip
+        retention-days: 5
 
   release:
     name: Release
@@ -135,7 +137,7 @@ jobs:
 
     - name: Download Mod Artifacts from Build Step
       id: download_zip
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: ${{ env.MOD_NAME }}
 
